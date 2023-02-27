@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -50,8 +51,11 @@ public class AdminController {
     }
 
     @PostMapping()
-    public String saveUser(@ModelAttribute("usernew") @Valid User user) {
-        if(user.getRoles().stream().anyMatch(r->r.getName().equals("ROLE_ADMIN"))){
+    public String saveUser(@ModelAttribute("usernew") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "new";
+        }
+        if (user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"))) {
             user.setRoles(getRole());
         }
         userService.saveUser(user);
@@ -61,15 +65,18 @@ public class AdminController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
         Set<Role> roles = roleService.readRoles();
-        model.addAttribute("allRoles",roles);
+        model.addAttribute("allRoles", roles);
         model.addAttribute("user", userService.readUserId(id));
         return "edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") long id) {
-        if(user.getRoles().stream().anyMatch(r->r.getName().equals("ROLE_ADMIN"))){
+        if (bindingResult.hasErrors()) {
+            return "edit";
+        }
+        if (user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"))) {
             user.setRoles(getRole());
         }
         userService.updateUser(user);
@@ -82,7 +89,7 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    private Set<Role> getRole(){
+    private Set<Role> getRole() {
         Set<Role> setRole = new HashSet<>();
         setRole.add(new Role("ROLE_ADMIN"));
         setRole.add(new Role("ROLE_USER"));

@@ -4,6 +4,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,24 +19,27 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    //    @NotEmpty(message = "Имя не должно быть пустым")
-//    @Size(min = 2, max = 25, message = "Имя должно быть в диапазоне от 2 до 25 символов")
+    @NotEmpty(message = "Логин не должен быть пустым")
+    @Size(min = 2, max = 25, message = "Логин должен быть в диапазоне от 2 до 25 символов")
     @Column(name = "login")
     private String username;
+    @NotEmpty(message = "Имя не должно быть пустым")
+    @Size(min = 2, max = 25, message = "Имя должно быть в диапазоне от 2 до 25 символов")
     @Column(name = "name")
     private String name;
     @Column(name = "department")
     private String department;
-    //    @NotEmpty(message = "Поле Email не должно быть пустым")
-//    @Email(message = "Email должен быть валидным")
+    @NotEmpty(message = "Поле Email не должно быть пустым")
+    @Email(message = "Email должен быть валидным")
     @Column(name = "email")
     private String email;
-    //    @Min(value = 0, message = "Возраст должен быть больше 0")
+    @Min(value = 0, message = "Возраст должен быть больше 0")
     @Column(name = "age")
     private byte age;
+    @NotEmpty(message = "Password не должен быть пустым")
     @Column(name = "password")
     private String password;
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +27,7 @@ public class UserController {
     public String getUsers(Model model, Principal principal) {
         //Получим одного пользователя и передадим на отображение в представлении
         User byUsername = userService.findByUsername(principal.getName());
-        model.addAttribute("user",byUsername);
+        model.addAttribute("user", byUsername);
         return "show_user";
     }
 
