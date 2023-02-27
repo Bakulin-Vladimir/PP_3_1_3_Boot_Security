@@ -26,16 +26,16 @@ public class UserServiceDetail implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),mapUserAuthority(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapUserAuthority(user.getRoles()));
     }
 
-    private Collection<? extends GrantedAuthority> mapUserAuthority(Collection<Role> role){
-        return role.stream().map(r->new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+    private Collection<? extends GrantedAuthority> mapUserAuthority(Collection<Role> role) {
+        return role.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
     }
-
 }

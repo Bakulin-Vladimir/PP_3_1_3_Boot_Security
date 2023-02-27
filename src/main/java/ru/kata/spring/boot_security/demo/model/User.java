@@ -1,24 +1,21 @@
 package ru.kata.spring.boot_security.demo.model;
 
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-//    @NotEmpty(message = "Имя не должно быть пустым")
+    //    @NotEmpty(message = "Имя не должно быть пустым")
 //    @Size(min = 2, max = 25, message = "Имя должно быть в диапазоне от 2 до 25 символов")
     @Column(name = "login")
     private String username;
@@ -26,24 +23,25 @@ public class User implements UserDetails {
     private String name;
     @Column(name = "department")
     private String department;
-//    @NotEmpty(message = "Поле Email не должно быть пустым")
+    //    @NotEmpty(message = "Поле Email не должно быть пустым")
 //    @Email(message = "Email должен быть валидным")
     @Column(name = "email")
     private String email;
-//    @Min(value = 0, message = "Возраст должен быть больше 0")
+    //    @Min(value = 0, message = "Возраст должен быть больше 0")
     @Column(name = "age")
     private byte age;
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
-    public User(String username, String name, String department, String email, byte age, String password, Collection<Role> roles) {
+
+    public User(String username, String name, String department, String email, byte age, String password, Set<Role> roles) {
         this.username = username;
         this.name = name;
         this.department = department;
@@ -61,11 +59,11 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
