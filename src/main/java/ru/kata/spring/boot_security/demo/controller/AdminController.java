@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.Set;
 
 @Controller
@@ -56,7 +55,7 @@ public class AdminController {
             return "new";
         }
         if (user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"))) {
-            user.setRoles(getRole());
+            user.setRoles(roleService.readRoles());
         }
         userService.saveUser(user);
         return "redirect:/admin";
@@ -77,7 +76,7 @@ public class AdminController {
             return "edit";
         }
         if (user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"))) {
-            user.setRoles(getRole());
+            user.setRoles(roleService.readRoles());
         }
         userService.updateUser(user);
         return "redirect:/admin";
@@ -87,12 +86,5 @@ public class AdminController {
     public String deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
-    }
-
-    private Set<Role> getRole() {
-        Set<Role> setRole = new HashSet<>();
-        setRole.add(new Role("ROLE_ADMIN"));
-        setRole.add(new Role("ROLE_USER"));
-        return setRole;
     }
 }

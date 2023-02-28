@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional
@@ -18,8 +20,10 @@ public class UserDaoImp implements UserDao {
     private EntityManager entityManager;
 
     @Override
-    public List<User> readUsers() {
-        return entityManager.createQuery("select u from User u").getResultList();
+    public Set<User> readUsers() {
+        List<User> userList = entityManager.createQuery("select u from User u").getResultList();
+        Set<User> collect = userList.stream().collect(Collectors.toSet());
+        return collect;
     }
 
     @Override

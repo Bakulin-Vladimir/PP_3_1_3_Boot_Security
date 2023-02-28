@@ -18,12 +18,12 @@ import ru.kata.spring.boot_security.demo.service.UserServiceDetail;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
-    private UserServiceDetail userDetailsService;
+    private UserServiceDetail userServiceDetail;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceDetail userDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceDetail userServiceDetail) {
         this.successUserHandler = successUserHandler;
-        this.userDetailsService = userDetailsService;
+        this.userServiceDetail = userServiceDetail;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(userServiceDetail);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
