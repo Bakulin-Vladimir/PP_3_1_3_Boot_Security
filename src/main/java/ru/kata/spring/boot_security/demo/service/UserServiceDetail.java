@@ -28,14 +28,6 @@ public class UserServiceDetail implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new User(user.getUsername(),
-                user.getName(),
-                user.getDepartment(),
-                user.getEmail(),
-                user.getAge(),
-                user.getPassword(),
-                user.getRoles()
-
-        );
+        return user;
     }
 }
