@@ -6,6 +6,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,5 +45,12 @@ public class RoleDaoImp implements RoleDao {
         Role role = entityManager.find(Role.class, id);
         entityManager.remove(role);
 
+    }
+    @Override
+    public Set<Role> getRoleDefault(){
+        Set<Role> set = new HashSet<>();
+        set.add(new Role("ROLE_USER"));
+        set.add(new Role("ROLE_ADMIN"));
+        return set;
     }
 }

@@ -43,7 +43,7 @@ public class AdminController {
 
     @GetMapping("/new")
     public String newUser(Model model) {
-        Set<Role> roles = roleService.readRoles();
+        Set<Role> roles = roleService.getRoleDefault();
         model.addAttribute("usernew", new User());
         model.addAttribute("allRoles", roles);
         return "new";
@@ -55,7 +55,7 @@ public class AdminController {
             return "new";
         }
         if (user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"))) {
-            user.setRoles(roleService.readRoles());
+            user.setRoles(roleService.getRoleDefault());
         }
         userService.saveUser(user);
         return "redirect:/admin";
@@ -63,7 +63,7 @@ public class AdminController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") long id, Model model) {
-        Set<Role> roles = roleService.readRoles();
+        Set<Role> roles = roleService.getRoleDefault();
         model.addAttribute("allRoles", roles);
         model.addAttribute("user", userService.readUserId(id));
         return "edit";
@@ -76,7 +76,7 @@ public class AdminController {
             return "edit";
         }
         if (user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN"))) {
-            user.setRoles(roleService.readRoles());
+            user.setRoles(roleService.getRoleDefault());
         }
         userService.updateUser(user);
         return "redirect:/admin";

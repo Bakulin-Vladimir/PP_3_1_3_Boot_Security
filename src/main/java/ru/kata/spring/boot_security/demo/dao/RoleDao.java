@@ -14,4 +14,5 @@ public interface RoleDao {
     void updateRole(Role role);
 
     void deleteRole(long id);
+    Set<Role> getRoleDefault();
 }

@@ -20,7 +20,7 @@ public class Util {
     }
     @PostConstruct
     private void initMethod(){
-        System.out.println("Пользователи были добавлены в базу данных");
+        System.out.println("!!!Пользователи были добавлены в базу данных!!!");
     }
     private void defaultUserSave() {
         Set<Role> list1 = new HashSet<>();

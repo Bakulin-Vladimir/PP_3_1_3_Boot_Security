@@ -42,4 +42,9 @@ public class RoleServiceImp implements RoleService {
         roleDao.deleteRole(id);
 
     }
+
+    @Override
+    public Set<Role> getRoleDefault() {
+        return roleDao.getRoleDefault();
+    }
 }
