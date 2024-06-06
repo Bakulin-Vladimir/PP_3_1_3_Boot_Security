@@ -12,7 +12,9 @@ import java.util.Set;
 
 @Component
 public class Util {
+
     private UserService userService;
+
     @Autowired
     public Util(UserService userService) {
         this.userService = userService;
@@ -23,6 +25,7 @@ public class Util {
         System.out.println("!!!Пользователи были добавлены в базу данных!!!");
     }
     private void defaultUserSave() {
+
         Set<Role> list1 = new HashSet<>();
         list1.add(new Role("ROLE_USER"));
         userService.saveUser(new User("user"
